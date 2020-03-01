@@ -1,0 +1,17 @@
+# data and installer
+data*
+Installer.exe
+
+# resources
+installer.ico
+background.bmp
+license.txt
+
+# dependencies
+dotNetFx40_Full_x86_x64.exe
+dotNet45.exe
+VS2010.exe
+VS2012.exe
+VS2013.exe
+VS2015.exe
+VS2017.exe
