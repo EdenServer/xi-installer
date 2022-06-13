@@ -1,6 +1,6 @@
 ;NSIS Modern User Interface
 ;Written by Joost Verburg
-;ZLIB License Copyright (c) 2018-2020 Eden Server
+;ZLIB License Copyright (c) 2022-2024 Eden Server
 
 ;--------------------------------
 ;Include Modern UI
@@ -11,9 +11,9 @@
   !include "StrContains.nsh"
 
   !define MUI_ICON "installer.ico"
-  !define MUI_LANGDLL_WINDOWTITLE "Installer"
+  !define MUI_LANGDLL_WINDOWTITLE "Eden Installer"
   !define MUI_WELCOMEFINISHPAGE_BITMAP "background.bmp"
-  !define MUI_WELCOMEPAGE_TITLE "Installer"
+  !define MUI_WELCOMEPAGE_TITLE "Eden Installer"
 
   !define MUI_LICENSEPAGE_CHECKBOX
 
@@ -24,14 +24,19 @@
 ;General
 
   ;Name and file
-  Name "XI Game"
+  Name "Eden"
   OutFile "Installer.exe"
 
-  ;Default installation folder
-  InstallDir "$PROGRAMFILES\PlayOnline"
+  ;Default installation folder. $sysdir converts to [OSInstallDrive]:\Windows\System\, the 2 then grabs first 2 characters of that path.
 
-  ;Get installation folder from registry if available
-  InstallDirRegKey HKCU "Software\XIGAME" "InstallPath"
+Function .onInit
+   
+  StrCpy $INSTDIR $SYSDIR 2
+  StrCpy $INSTDIR "$INSTDIR\Eden\"
+  
+FunctionEnd
+  
+  InstallDir "$INSTDIR"
 
   ;Request application privileges for Windows Vista
   RequestExecutionLevel admin
@@ -162,7 +167,7 @@ Section "XIInstaller" XIInstaller
   WriteRegDWORD HKLM "SOFTWARE\WOW6432Node\PlayOnlineUS\SquareEnix\FinalFantasyXI" "0043" 0x00000000
   WriteRegBin   HKLM "SOFTWARE\WOW6432Node\PlayOnlineUS\SquareEnix\FinalFantasyXI" "bFirst" 00
   WriteRegStr   HKLM "SOFTWARE\WOW6432Node\PlayOnlineUS\SquareEnix\FinalFantasyXI" "padsin000" "8,9,13,12,10,0,1,3,2,15,-1,-1,14,-33,-33,32,32,-36,-36,35,35,6,7,5,4,11,-1"
-  WriteRegStr   HKLM "SOFTWARE\WOW6432Node\PlayOnlineUS\SquareEnix\FinalFantasyXI" "padmode000" "1,0,1,0,1,1"
+  WriteRegStr   HKLM "SOFTWARE\WOW6432Node\PlayOnlineUS\SquareEnix\FinalFantasyXI" "padmode000" "0,0,1,0,0,1"
 
   WriteRegDWORD HKLM "SOFTWARE\WOW6432Node\PlayOnlineUS\SquareEnix\PlayOnlineViewer" "FirstBootPlayMovie" 0x00000000 
   WriteRegBin   HKLM "SOFTWARE\WOW6432Node\PlayOnlineUS\SquareEnix\PlayOnlineViewer" "SPS000" 66c84962897d8dce4d64151db09a4ca4267c07c18b8df49c8f31a4b35a72f34cda1df301ee999021d69a2a941e91797e9b4d6d5db04a362a03ac41cdf89c6e50ed98531f457b017faa35eb0cd4cb0fea6d3852bfed8fa10351e83d64074178269644b322c6e21ef57a32b167199da82164facc60f1623623b8f8a3f3881a6d26bbd15e4dcf04012c1a91a50f2b942fa344644dac419e9aadb22489b813110830cf7a8b305ba06b8bdb8131bf2ab1f29e392f6bf43e47714d39fd00ed10369c647251aa6bc05fcf3c0210e71178ff0fe3df2548963e927f38c3bd205bed21ac6ed12fea4576c534b4bf3128c1d5fc4315f3580d03b21df18c30b11cf125f9132f980f9e7b1d8579f77a8eaf6d6426fc67e50d265f0e13a8bad5bad1bead511761c43e93b67e6428379c7a0c7ba2084db1458af16efa76a77f037484ba7e540e3e07b4f9f34df3d5b6b273174fa2f87ff2527472824fedd498385e3f48374ba7a317964db33826bd56bb5edf4acb3666d83b1accfdde4d0cb1b6a46733fca102d2d246a209d506d7c6869eeafe2dc9ed6ac9e9d64bf84d4f881db3e7425a061de002ab6043b448e9a2078c32517c6a1c9cefc8974f0d21fbcd3b80e08e0a85e915a6889912828a01cc41a8c0046fb033532b6f158ac05e45e33efdf3437643505a1839a303d7838f244f6a82e218947826d508c513a84e06906bd9677cc9226d19a350bef70802d40c7dccbbfe30f93482839f62f5b96a7ea3672e342e81598180f18c388e5615935ee097d0c880a635ab2068e093d6dfc420f49718d86b297dde1a224044311adbba93224182ef211becca81bdcfec40f80fd1a0fdef79ad744ee5329883af56497f8e6f7ed43d842573582afa93cf16cff1ca1d889a72dcdfae4f9a9956d2dfe1c7aabf514180f4f376fbb9d767da165028788aeceecfc775f440e78b3546c4fc162367c3b1ab027a25af51f97d7d11b71ac0988f712477c492775742b41069823320b3723855e5ce3d5c2dc7ae7fb409f5458c40bebe41eb23c39d99a7a09f037b06d881b1a8b4efdf2adfb96b8b9d4dcc51e3f2519a8244fbc5190ec701f73c85b9bab3e1a60d01bb0dd990f875a378aa375e302c1747f5fa99e36613740c76443af4a5d1956521830d82872d43124471af8e8b41984174404066c0cc62b1df99d6296b01496adc5a90e7241dab32ebc640dd19ff15bfd36675f45cfac7e1f0fae90f5664c5c3b4bcca4f730d24f68736e84bd7c50150571613bce014b29beb8282586931a8ceb76d7b5e2b3c3a965f35f84939162bf414cf053188bc7ae02b4a024b69c5bd3a3fa3d561a29498331841c5314a3466b194625a3f5d67e67265898c51fb6a2e62a87866364be2c3cec1389a528301e97e4ab05be3f55fc7498e559593eefff3785b4dc48217e2d1734e0d490ec0bae10b0212758567e64200e7e2b3c39ef302e666b2f4801546a3636805c9533e114b6a323d56133c88a369bda4ab8c203aff022063c816d94b504c2a393e719547a2488c5a16634abe247d292147eb4e794c6a2ce7f2478cedeb3618ce531be72abd9f63173e15cf65c7d21f44e4880b32ac2a9fb16c9378058a51e36c8bba70fdcfcb3e6b6d852f478b92a1c152a9caba215ecdc247008583e6018f3b5c61c1b10de9fe53fd68078ff2c91a57d795114a0863a81e81d5e2c024c30f99be4ec4b923776c5cbd7bd9ccde38f56b6c0180b0c9be4c1bc2307e612702e576b7990bd35fcc8251fa14e86348b8714a6ca8f1c50ae07337143c52120fd420a66a6f88cadd02e49dea36c716b3f845dc4d3fbd8db3baf966cdf68cc7875c3f881d09222cd8a9c099a91b0cf6274dc9d6d679f484d9a9597c106d172c663ce96ad8ba8efb697f6ff1ed074110869dae9159ec4d5a6f4570944db1c4baf0edb35b4e02ac1c4a81cc76d17dc69931120561550f9947b714a6a372e6daf434c08d5b2db1b2433edda30469585f12fc869c266f0cf30cc9f03bba79c9c5de6a99038158118ca4bfa029e6ee6de7d01058095175adb149fb6b520c9b1502d6bd1a220456d7536bce0cae334ce4afcd698c2dcf7c6c016cf7acf516c8193e1a0a0d75ce1f501ca53c40af5d8f5a9316739a8b577ffa2838fb83d9ac01870ec55d0f929f4adff94239a39645d931ac3733356f80f2a5fae14ff057fbaefaebf4ef1288c9e2d287fbb93c57599bb88490bd335911dd2c19ba4588fc1b4f30abdbf1bcb0305afa9670d8e198e0339a52989d3f6b25e44351754b92f66c379a93a84a85a07245d002764886c7e9f6c0249e2b3b00a4652dfb8d3b7972b6de7c1300fb8d01099d1b4bacf9cb59ddce92222f286a86c02425cb736e03c4aa0e032072853648bb2ad4e528db1be1818c5779cd8971a342f92a5c4bb933fed5635ff61589433932ea36ab61ac8720b9b2ae94f3655412d36386dd13bf55f6f49f057ace71f46de4f0a509bf7969569429134e8d9f6b42ed7bd861ba6d8ccad9f6e7bf8f8a22563edc23a448ab1ddb62338cf878a230c72aa6eb4f625cb40edc644739ebaef343c7b9473e3f1389280fc8122f5ba745d824bab71ea3eda0aaeb5224cfb27b89faa6a806e9159fc7e1f215ed5043
@@ -241,12 +246,16 @@ Section "XIInstaller" XIInstaller
   ;create desktop shortcut
   DetailPrint "Building Shortcuts..."
   SetOutPath "$INSTDIR\Ashita\"
-  CreateShortCut "$DESKTOP\Play XI.lnk" "$INSTDIR\Ashita\Ashita.exe" "" "$INSTDIR\installer.ico"
+  CreateShortCut "$DESKTOP\Play XI.lnk" "$INSTDIR\Ashita\Ashita.exe" "--noupdate" "$INSTDIR\installer.ico"
 
   ;create start menu shortcut
   createDirectory "$SMPROGRAMS\XIGAME"
   createShortCut "$SMPROGRAMS\XIGAME\Play XI.lnk" "$INSTDIR\Ashita\Ashita.exe" "" "$INSTDIR\installer.ico"
   createShortCut "$SMPROGRAMS\XIGAME\Uninstall XI.lnk" "$INSTDIR\Uninstall.exe"
+
+  ;Creating Windower Firewall rule to block updates. See https://nsis.sourceforge.io/NSIS_Simple_Firewall_Plugin for what numbers mean
+  SimpleFC::AdvAddRule "Eden Windower" "Blocking Windower updates for Eden specifically" 256 2 1 2147483647 0 "$INSTDIR\Windower\Windower.exe" "" "" "" "" "" "" ""
+
 
 SectionEnd
 
@@ -280,10 +289,15 @@ Section "Uninstall"
 
   UnRegDLL "$INSTDIR\SquareEnix\TetraMaster\TM.dll"
 
-
-  RMDir /r "$INSTDIR\"
+; RMDir changed to specify folders themselves. Otherwise if user installs to just Desktop for example, running uninstaller will delete everything on Desktop
+  RMDir /r "$INSTDIR\SquareEnix"
+  RMDir /r "$INSTDIR\Ashita"
+  RMDir /r "$INSTDIR\Windower"
   Delete "$DESKTOP\Play XI.lnk"
+  Delete "$INSTDIR\installer.ico"
   RMDir /r "$SMPROGRAMS\XIGAME"
+ ; Lack of /r makes it not remove if there's other folders/files in this path, further preventing accidental file deletion
+  RMDir "$INSTDIR\"
 
   DeleteRegKey /ifempty HKCU "Software\XIINSTALLER"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\XIINSTALLER"
